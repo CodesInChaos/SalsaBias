@@ -6,11 +6,9 @@ using System.Linq;
 
 namespace SalsaBias
 {
-    using Word = UInt32;
-
     class Program
     {
-        private const int SampleCount = 1 << 25;
+        private const int SampleCount = 1 << 28;
         private const int Rounds = 4;
 
         static void Main()
@@ -47,7 +45,7 @@ namespace SalsaBias
 
             var biasTuples = bitCounters.SelectMany((bitCounter, i) => bitCounter.GetBiases().Select((bias, j) => new { i, j, Bias = bias.Item1, Error = bias.Item2 }))
                 .OrderByDescending(t => Math.Abs(t.Bias));
-            var formattedOutputs = biasTuples.Select(t => string.Format(CultureInfo.InvariantCulture, "{0:f4} err {1:f4}   {2} -> {3}", t.Bias, t.Error, BitName(t.i), BitName(t.j)));
+            var formattedOutputs = biasTuples.Select(t => string.Format(CultureInfo.InvariantCulture, "{0:f5} err {1:f5}   {2} -> {3}", t.Bias, t.Error, BitName(t.i), BitName(t.j)));
             File.WriteAllLines("biases.txt", formattedOutputs);
 
             Console.Clear();
